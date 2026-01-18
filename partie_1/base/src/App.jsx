@@ -1,39 +1,72 @@
-import { useState } from 'react'
 
 import './App.css'
 
-function HelloWorld() {
-  return <h1>Hello, World!</h1> 
-}
+import { useState } from 'react'
 
-function Counter() {
-  const [count, setCount] = useState(0)
-
+function TodoList({ tasks }) {
   return (
-    <div>
-      <p>Count : {count}</p>
-      <button onClick={() => setCount(count + 1)}>+1</button>
-      <button onClick={() => setCount(count - 1)}>-1</button>
-    </div>
+    <ul>
+      {tasks.map((task) => (
+        <li key={task.id}>{task.name}</li>
+      ))}
+    </ul>
   )
 }
 
-function UserCard(props) {
+function FormulaireTask({ tasks, setTasks }) {
+  const [task, setTask] = useState("")
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (task.trim() === "") return;
+    setTasks([...tasks, { id: tasks.length + 1, name: task }]);
+    setTask("");
+  };
+
   return (
-    <div>
-      <h2>{props.name}</h2>
-      <p>Age : {props.age}</p>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input 
+        type="text"
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
+        placeholder="Task NAME"
+      />
+      <button type="submit">Ajouter</button>
+    </form>
   )
 }
+
+function ColorPicker() {
+  const [color, setColor] = useState("red");
+
+  return (
+  <div>
+    <input 
+      type="color" 
+      value={color} 
+      onChange={(e) => setColor(e.target.value)} 
+    />
+    <div 
+      style={{ backgroundColor: color, width: "200px", height: "200px", marginTop: "10px" }}
+    />
+  </div>
+  )
+}
+
+
 
 function App() {
+  const [tasks, setTasks] = useState([
+    { id: 1, name: "jouer" },
+    { id: 2, name: "dormir" },
+    { id: 3, name: "manger" },
+  ])
+
   return (
     <div>
-      <HelloWorld />
-      <Counter />
-      <UserCard name="Alice" age={30} />
-      <UserCard name="Bob" age={25} />
+      <TodoList tasks={tasks} />
+      <FormulaireTask tasks={tasks} setTasks={setTasks} />
+      <ColorPicker />
     </div>
   )
 }
