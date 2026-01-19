@@ -1,72 +1,71 @@
 
+import { useState, useEffect } from 'react'
 import './App.css'
 
-import { useState } from 'react'
+function Clock() {
+  const [time, setTimer] = useState(new Date())
 
-function TodoList({ tasks }) {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimer(new Date())
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+      <h2>Current Time: {time.toLocaleTimeString()}</h2>
+  )
+}
+
+function PostList() {
+  const [posts, setPosts] = useState([])
+  
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then(response => response.json())
+      .then(data => setPosts(data))
+  }, []);
+
   return (
     <ul>
-      {tasks.map((task) => (
-        <li key={task.id}>{task.name}</li>
+      {posts.slice(0, 5).map(post => (
+        <li key={post.id}>{post.title}</li>
       ))}
     </ul>
   )
 }
 
-function FormulaireTask({ tasks, setTasks }) {
-  const [task, setTask] = useState("")
+function Timer() {
+  const [seconds, setSeconds] = useState(0)
+  const [isRunning, setIsRunning] = useState(true)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (task.trim() === "") return;
-    setTasks([...tasks, { id: tasks.length + 1, name: task }]);
-    setTask("");
-  };
+  useEffect(() => {
+    if (!isRunning) return
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Task NAME"
-      />
-      <button type="submit">Ajouter</button>
-    </form>
-  )
-}
-
-function ColorPicker() {
-  const [color, setColor] = useState("red");
-
-  return (
-  <div>
-    <input 
-      type="color" 
-      value={color} 
-      onChange={(e) => setColor(e.target.value)} 
-    />
-    <div 
-      style={{ backgroundColor: color, width: "200px", height: "200px", marginTop: "10px" }}
-    />
-  </div>
-  )
-}
-
-
-
-function App() {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: "jouer" },
-    { id: 2, name: "dormir" },
-    { id: 3, name: "manger" },
-  ])
+    const interval = setInterval(() => {
+      setSeconds(prev => prev + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [isRunning])
 
   return (
     <div>
-      <TodoList tasks={tasks} />
-      <FormulaireTask tasks={tasks} setTasks={setTasks} />
-      <ColorPicker />
+      <h2>Timer: {seconds} seconds</h2>
+      <button
+        onClick={() => setIsRunning(!isRunning)}
+      >
+        {isRunning ? "Pause Timer" : "Resume Timer"}
+      </button>
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <div>
+      <Clock />
+      <PostList />
+      <Timer />
     </div>
   )
 }
