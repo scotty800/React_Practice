@@ -1,17 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import User from "./pages/User";
+import { useState } from 'react';
+import { useContext } from "react";
+import { ThemeContext } from "./context/ThemeContext";
+import CounterDisplay from './Components/CounterDisplay';
+import CounterButton from './Components/CounterButtons';
 
 function App() {
+  const [count, setCount] = useState(0);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/user/:id" element={<User />} />
-    </Routes>
+    <div className={theme}>
+      <button onClick={toggleTheme}>Switch Theme</button>
+      <h1>Shared Counter</h1>
+      <CounterDisplay count={count} />
+      <CounterButton setCount={setCount} />
+    </div>
   );
 }
 
