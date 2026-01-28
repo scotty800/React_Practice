@@ -1,9 +1,10 @@
-import React from 'react';
-import { useFetch } from '../hooks/useFetch';
-
-export function PostCard({ post }) {
-    return (<div className="post-card">
-        <h2>{post.title}</h2>
-        <p>{post.body}</p>
-    </div>);
+function PostCard({ post }) {
+  return (
+    <div>
+      <h3>{post.title}</h3>
+      <p>{post.body.slice(0, 100)}...</p>
+    </div>
+  );
 }
+
+export default PostCard;
