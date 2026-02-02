@@ -5,7 +5,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "gray",
       }}
@@ -13,30 +13,30 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Accueil",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="home" color={color} size={size} />
+            <FontAwesome name="home" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="Profile"
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user" color={color} size={size} />
+            <FontAwesome name="user" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="about"
+        name="About"
         options={{
           title: "About",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="info-circle" color={color} size={size}/>
+            <FontAwesome name="info-circle" size={size} color={color} />
           ),
         }}
       />
     </Tabs>
-  )
+  );
 }
